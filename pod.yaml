@@ -1,0 +1,11 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: go-todo-app
+spec:
+  containers:
+  - name: go-cont
+    image: ibrarullah/goapp:latest
+    ports:
+    - containerPort: 4040
+    
