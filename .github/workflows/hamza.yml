@@ -17,7 +17,7 @@ jobs:
       # 2️⃣ Clone target repo and create branch
       - name: Clone target repo
         run: |
-          git clone https://x-access-token:${{ secrets.OTHER_REPO_TOKEN }}@github.com/ORG_OR_USER/target-repo.git
+          git clone https://x-access-token:${{ secrets.OTHER_REPO_TOKEN }}@github.com/saad0saade008/sms-0-sept.git     #@github.com/ORG_OR_USER/target-repo.git
           cd target-repo
           git checkout -b auto-update-${{ github.run_id }}
 
