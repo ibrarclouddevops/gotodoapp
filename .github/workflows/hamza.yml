@@ -1,4 +1,4 @@
-name: Update Other Repo and Create PR
+name: Update sms-0-sept Repo and Create PR
 
 on:
   push:
@@ -14,28 +14,28 @@ jobs:
       - name: Checkout source repo
         uses: actions/checkout@v4
 
-      # 2️⃣ Clone target repo and create branch
-      - name: Clone target repo
+      # 2️⃣ Clone your target repo and create a new branch
+      - name: Clone sms-0-sept repo
         run: |
-          git clone https://x-access-token:${{ secrets.OTHER_REPO_TOKEN }}@github.com/saad0saade008/sms-0-sept.git     #@github.com/ORG_OR_USER/target-repo.git
-          cd target-repo
+          git clone https://x-access-token:${{ secrets.OTHER_REPO_TOKEN }}@github.com/saad0saade008/sms-0-sept.git
+          cd sms-0-sept
           git checkout -b auto-update-${{ github.run_id }}
 
-      # 3️⃣ Modify files
+      # 3️⃣ Modify files in target repo
       - name: Modify files
         run: |
-          cd target-repo
-          echo "Updated at $(date)" >> example.txt
+          cd sms-0-sept
+          echo "Updated by GitHub Action at $(date)" >> example.txt
 
       # 4️⃣ Commit and push changes
-      - name: Commit and push
+      - name: Commit and push changes
         run: |
-          cd target-repo
+          cd sms-0-sept
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           git add .
-          git commit -m "Automated update from pipeline"
+          git commit -m "Automated update from source repo"
           git push origin auto-update-${{ github.run_id }}
 
       # 5️⃣ Create Pull Request
@@ -43,9 +43,9 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.OTHER_REPO_TOKEN }}
-          repository: ORG_OR_USER/target-repo
+          repository: saad0saade008/sms-0-sept
           head: auto-update-${{ github.run_id }}
           base: main
-          title: "Automated update from pipeline"
+          title: "Automated update from source repo"
           body: |
             This PR was automatically created by a GitHub Action.
