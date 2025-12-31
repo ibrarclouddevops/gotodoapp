@@ -25,7 +25,7 @@ jobs:
       - name: Modify files
         run: |
           cd sms-0-sept
-          echo "Updated by GitHub Action at by whome is alwaye me  $(date)" >> example1.txt
+          echo "Updated by GitHub Action at by whome is alwaye me  $(date)" >> example2.txt
 
       # 4️⃣ Commit & push NEW branch to TARGET repo
       - name: Commit and push changes
