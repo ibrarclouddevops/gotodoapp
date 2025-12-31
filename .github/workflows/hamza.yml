@@ -10,25 +10,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout SOURCE repo (only for triggering)
-      - name: Checkout source repo
-        uses: actions/checkout@v4
+      # 1️⃣ Checkout source repo (only to trigger)
+      - uses: actions/checkout@v4
 
       # 2️⃣ Clone TARGET repo
-      - name: Clone sms-0-sept repo
+      - name: Clone sms-0-sept
         run: |
           git clone https://x-access-token:${{ secrets.OTHER_REPO_TOKEN }}@github.com/saad0saade008/sms-0-sept.git
           cd sms-0-sept
           git checkout -b auto-update-${{ github.run_id }}
 
-      # 3️⃣ Modify REAL files in target repo
+      # 3️⃣ Modify REAL files
       - name: Modify files
         run: |
           cd sms-0-sept
           echo "Updated by GitHub Action at $(date)" >> example.txt
 
-      # 4️⃣ Commit and push branch to TARGET repo
-      - name: Commit and push changes
+      # 4️⃣ Commit & push to TARGET repo
+      - name: Commit and push
         run: |
           cd sms-0-sept
           git config user.name "github-actions[bot]"
@@ -38,14 +37,14 @@ jobs:
           git commit -m "Automated update from source repo"
           git push origin auto-update-${{ github.run_id }}
 
-      # 5️⃣ Create Pull Request in TARGET repo
+      # 5️⃣ Create PR using GitHub CLI (REAL FILE PR)
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.OTHER_REPO_TOKEN }}
-          repository: saad0saade008/sms-0-sept
-          head: auto-update-${{ github.run_id }}
-          base: main
-          title: "Automated update from source repo"
-          body: |
-            This PR was automatically created by a GitHub Action.
+        env:
+          GH_TOKEN: ${{ secrets.OTHER_REPO_TOKEN }}
+        run: |
+          cd sms-0-sept
+          gh pr create \
+            --base main \
+            --head auto-update-${{ github.run_id }} \
+            --title "Automated update from source repo" \
+            --body "This PR was automatically created by a GitHub Action."
