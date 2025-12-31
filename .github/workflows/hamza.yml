@@ -1,4 +1,4 @@
-name: Update sms-0-sept Repo and Create PR
+name: Update sms-0-sept and Create PR
 
 on:
   push:
@@ -10,24 +10,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout source repo (only to trigger)
-      - uses: actions/checkout@v4
+      # 1️⃣ Checkout YOUR repo (only to trigger pipeline)
+      - name: Checkout source repo
+        uses: actions/checkout@v4
 
       # 2️⃣ Clone TARGET repo
-      - name: Clone sms-0-sept
+      - name: Clone sms-0-sept repo
         run: |
           git clone https://x-access-token:${{ secrets.OTHER_REPO_TOKEN }}@github.com/saad0saade008/sms-0-sept.git
           cd sms-0-sept
           git checkout -b auto-update-${{ github.run_id }}
 
-      # 3️⃣ Modify REAL files
+      # 3️⃣ Modify files in TARGET repo
       - name: Modify files
         run: |
           cd sms-0-sept
           echo "Updated by GitHub Action at $(date)" >> example.txt
 
-      # 4️⃣ Commit & push to TARGET repo
-      - name: Commit and push
+      # 4️⃣ Commit & push NEW branch to TARGET repo
+      - name: Commit and push changes
         run: |
           cd sms-0-sept
           git config user.name "github-actions[bot]"
@@ -37,7 +38,7 @@ jobs:
           git commit -m "Automated update from source repo"
           git push origin auto-update-${{ github.run_id }}
 
-      # 5️⃣ Create PR using GitHub CLI (REAL FILE PR)
+      # 5️⃣ Create PR in TARGET repo (REAL FILE PR)
       - name: Create Pull Request
         env:
           GH_TOKEN: ${{ secrets.OTHER_REPO_TOKEN }}
